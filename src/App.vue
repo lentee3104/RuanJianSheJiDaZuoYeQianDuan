@@ -44,7 +44,7 @@ function deleteTask(index: number){
     display: flex;
     padding: 0.5em;
     gap: 0.5em;
-    justify-items: center;
+    align-items: center;
 }
 
 .isTaskDone {
