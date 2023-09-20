@@ -25,15 +25,15 @@ function deleteTask(index: number){
 
 <template>
     <h1>Todo List</h1>
-    <div>
-        <input type="text" v-model="taskContent">
-        <button @click="addNewTask()">添加</button>
+    <div style="display: flex; width: 20em; gap: 0.5em">
+        <el-input type="text" v-model="taskContent" />
+        <el-button type="primary" @click="addNewTask()">添加</el-button>
     </div>
     <div>
         <div v-for="(item, index) in list" class="taskItem">
-            <input type="checkbox" v-model="item.isDone">
+            <el-checkbox type="checkbox" v-model="item.isDone" />
             <div :class="{isTaskDone: item.isDone}">{{item.content}}</div>
-            <button @click="deleteTask(index)">删除</button>
+            <el-button type="danger" size="small" @click="deleteTask(index)">删除</el-button>
         </div>
     </div>
 
@@ -41,7 +41,10 @@ function deleteTask(index: number){
 
 <style scoped>
 .taskItem {
-    display: flex
+    display: flex;
+    padding: 0.5em;
+    gap: 0.5em;
+    justify-items: center;
 }
 
 .isTaskDone {
