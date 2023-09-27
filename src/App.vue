@@ -32,16 +32,16 @@ function deleteTask(index: number){
 </script>
 
 <template>
-    <h1>Todo List</h1>
-    <div style="display: flex; width: 20em; gap: 0.5em">
+    <h1 class="text-red text-2xl">Todo List</h1>
+    <div class="flex w-20em gap-x-2">
         <el-input type="text" v-model="taskContent" />
-        <el-button type="primary" @click="addNewTask()">添加</el-button>
+        <el-button type="primary" @click="addNewTask()"><i class="i-ant-design-plus-circle-outlined"></i> 添加</el-button>
     </div>
     <div>
         <div v-for="(item, index) in list" class="taskItem">
             <el-checkbox type="checkbox" v-model="item.isDone" />
             <div :class="{isTaskDone: item.isDone}">{{item.content}}</div>
-            <el-button type="danger" size="small" @click="deleteTask(index)">删除</el-button>
+            <el-button type="danger" size="small" @click="deleteTask(index)"><i class="i-ant-design-delete-outlined"></i> 删除</el-button>
         </div>
     </div>
 
@@ -49,13 +49,10 @@ function deleteTask(index: number){
 
 <style scoped>
 .taskItem {
-    display: flex;
-    padding: 0.5em;
-    gap: 0.5em;
-    align-items: center;
+    --at-apply: flex p-2 gap-x-2 items-center
 }
 
 .isTaskDone {
-    text-decoration: line-through;
+    --at-apply: line-through;
 }
 </style>
