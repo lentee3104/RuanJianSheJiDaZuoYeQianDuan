@@ -1,26 +1,34 @@
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
+import {reactive, ref, watch} from 'vue'
 
 interface TaskItem {
     content: string;
     isDone: boolean;
 }
 
-const list: TaskItem[] = reactive([
-    {content: "test1", isDone: false},
-    {content: "test2", isDone: false}
-]);
+const list: TaskItem[] = reactive([]);
 
 let taskContent = ref("");
+
+let strInStorage = localStorage.getItem('list')??'[]'
+list.push(...JSON.parse(strInStorage));
+
+watch(list, ()=>{
+    localStorage.setItem("list", JSON.stringify(list))
+    console.log("list 被修改");
+})
 
 function addNewTask(){
     const newTask = {content: taskContent.value, isDone: false};
     list.push(newTask);
     taskContent.value = "";
 }
+
 function deleteTask(index: number){
     list.splice(index,1);
 }
+
+
 </script>
 
 <template>
