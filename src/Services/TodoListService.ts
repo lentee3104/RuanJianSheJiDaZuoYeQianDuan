@@ -1,16 +1,6 @@
 import {reactive, watch} from 'vue'
-
-export interface ITaskItem {
-    content: string;
-    isDone: boolean;
-}
-export interface ITodoListService{
-    getList(): ITaskItem[];
-    addNewTask(taskContent: string): boolean;
-    deleteTask(taskIndex: number): boolean;
-    loadFromLocalStorage():ITaskItem[];
-    saveToLocalStorage(): boolean;
-}
+import type {ITaskItem} from '@/Types/ITaskItem'
+import type {ITodoListService} from '@/Types/ITodoListService'
 
 export class TodoListService implements ITodoListService{
 

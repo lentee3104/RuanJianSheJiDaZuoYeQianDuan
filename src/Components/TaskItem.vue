@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {inject} from 'vue'
+import type {ITodoListService} from '@/Types/ITodoListService'
 
 defineProps(['item','itemIndex'])
 defineEmits(['deleteTask'])
 
-const todoListService = inject('todoListService')
+const todoListService = inject<ITodoListService>('todoListService')!
 </script>
 
 <template>

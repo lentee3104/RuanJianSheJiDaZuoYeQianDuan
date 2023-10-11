@@ -1,7 +1,8 @@
 <script setup lang="ts">
     import {ref} from 'vue'
     import {inject} from 'vue'
-    const todoListService = inject('todoListService')
+    import type {ITodoListService} from '@/Types/ITodoListService'
+    const todoListService = inject<ITodoListService>('todoListService')!
 
     let taskContent = ref("");
     function onOk(){

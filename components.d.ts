@@ -10,5 +10,8 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElInput: typeof import('element-plus/es')['ElInput']
+    TaskInput: typeof import('./src/components/TaskInput.vue')['default']
+    TaskItem: typeof import('./src/components/TaskItem.vue')['default']
+    TaskList: typeof import('./src/components/TaskList.vue')['default']
   }
 }

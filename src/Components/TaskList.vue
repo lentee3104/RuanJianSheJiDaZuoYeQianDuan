@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import TaskItem from '@/TaskItem.vue'
+import TaskItem from '@/Components/TaskItem.vue'
 import {inject} from 'vue'
+import type {ITodoListService} from '@/Types/ITodoListService'
 
-const todoListService = inject('todoListService')
+const todoListService = inject<ITodoListService>('todoListService')!
 
 </script>
 
