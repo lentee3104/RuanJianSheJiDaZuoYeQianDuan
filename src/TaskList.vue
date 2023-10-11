@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import TaskItem from '@/TaskItem.vue'
+
 const props = defineProps(['tasklist'])
 function deleteTask(index: number){
     props.tasklist.splice(index,1);
@@ -8,20 +10,14 @@ function deleteTask(index: number){
 
 <template>
     <div v-auto-animate>
-        <div v-for="(item, index) in tasklist" class="taskItem">
-            <el-checkbox type="checkbox" v-model="item.isDone" />
-            <div :class="{isTaskDone: item.isDone}" class="grow">{{item.content}}</div>
-            <el-button type="danger" size="small" @click="deleteTask(index)"><i class="i-ant-design-delete-outlined"></i> 删除</el-button>
-        </div>
+        <task-item v-for="(item, index) in tasklist"
+                   :item="item"
+                   :item-index="index"
+                   @delete-task="deleteTask"
+        ></task-item>
     </div>
 </template>
 
 <style scoped>
-.taskItem {
-    --at-apply: flex p-2 gap-x-2 items-center w-20em
-}
 
-.isTaskDone {
-    --at-apply: line-through;
-}
 </style>

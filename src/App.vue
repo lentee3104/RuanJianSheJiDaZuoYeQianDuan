@@ -10,8 +10,6 @@ interface TaskItem {
 
 const list: TaskItem[] = reactive([]);
 
-
-
 let strInStorage = localStorage.getItem('list')??'[]'
 list.push(...JSON.parse(strInStorage));
 
@@ -23,12 +21,7 @@ watch(list, ()=>{
 function addNewTask(taskContent: string){
     const newTask = {content: taskContent, isDone: false};
     list.push(newTask);
-
 }
-
-
-
-
 </script>
 
 <template>
