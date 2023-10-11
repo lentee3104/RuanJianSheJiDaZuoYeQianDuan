@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import TaskItem from '@/TaskItem.vue'
+import {inject} from 'vue'
 
-const props = defineProps(['tasklist'])
-function deleteTask(index: number){
-    props.tasklist.splice(index,1);
-}
+const todoListService = inject('todoListService')
 
 </script>
 
 <template>
     <div v-auto-animate>
-        <task-item v-for="(item, index) in tasklist"
+        <task-item v-for="(item, index) in todoListService.getList()"
                    :item="item"
                    :item-index="index"
-                   @delete-task="deleteTask"
         ></task-item>
     </div>
 </template>

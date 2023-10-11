@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import {inject} from 'vue'
+
 defineProps(['item','itemIndex'])
 defineEmits(['deleteTask'])
+
+const todoListService = inject('todoListService')
 </script>
 
 <template>
     <div  class="taskItem">
         <el-checkbox type="checkbox" v-model="item.isDone" />
         <div :class="{isTaskDone: item.isDone}" class="grow">{{item.content}}</div>
-        <el-button type="danger" size="small" @click="$emit('deleteTask',itemIndex)"><i class="i-ant-design-delete-outlined"></i> 删除</el-button>
+        <el-button type="danger" size="small" @click="todoListService.deleteTask(itemIndex)"><i class="i-ant-design-delete-outlined"></i> 删除</el-button>
     </div>
 
 </template>

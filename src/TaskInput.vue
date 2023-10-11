@@ -1,10 +1,11 @@
 <script setup lang="ts">
     import {ref} from 'vue'
+    import {inject} from 'vue'
+    const todoListService = inject('todoListService')
 
-    const emit = defineEmits(["newTask"])
     let taskContent = ref("");
     function onOk(){
-        emit("newTask", taskContent.value)
+        todoListService.addNewTask(taskContent.value);
         taskContent.value = "";
     }
 </script>

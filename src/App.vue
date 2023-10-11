@@ -1,27 +1,11 @@
 <script setup lang="ts">
-import {reactive, ref, watch} from 'vue'
+import {provide} from 'vue'
 import TaskInput from '@/TaskInput.vue'
 import TaskList from '@/TaskList.vue'
+import {TodoListService} from '@/TodoListService'
 
-interface TaskItem {
-    content: string;
-    isDone: boolean;
-}
+provide('todoListService', new TodoListService())
 
-const list: TaskItem[] = reactive([]);
-
-let strInStorage = localStorage.getItem('list')??'[]'
-list.push(...JSON.parse(strInStorage));
-
-watch(list, ()=>{
-    localStorage.setItem("list", JSON.stringify(list))
-    console.log("list 被修改");
-})
-
-function addNewTask(taskContent: string){
-    const newTask = {content: taskContent, isDone: false};
-    list.push(newTask);
-}
 </script>
 
 <template>
@@ -29,7 +13,7 @@ function addNewTask(taskContent: string){
 
     <task-input @newTask="addNewTask"></task-input>
 
-    <task-list :tasklist="list"></task-list>
+    <task-list></task-list>
 
 </template>
 
