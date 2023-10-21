@@ -31,7 +31,7 @@ function onOk(){
         <template v-else>
             <div :class="{isTaskDone: item.isDone}" class="grow">{{item.content}}</div>
             <el-button type="primary" size="small" @click="onEdit">修改</el-button>
-            <el-button type="danger" size="small" @click="todoListService.deleteTask(itemIndex)"><i class="i-ant-design-delete-outlined"></i> 删除</el-button>
+            <el-button type="danger" size="small" @click="todoListService.deleteTask(itemIndex)"><i class="i-ant-design:delete-outlined"></i> 删除</el-button>
         </template>
     </div>
 
