@@ -17,11 +17,7 @@ const routes = [
         name:"MainBox",
         component:()=>import('@/views/MainBox.vue')
     },
-    {
-        path:"/Home",
-        name:"Home",
-        component:()=>import('@/views/home/Home.vue')
-    },
+
 
 ]
 
@@ -46,6 +42,8 @@ router.beforeEach((to, from, next)=>{
         }else{
             /*第一次配置路由时才会调用ConfigRouter*/
             if(!isGetterRouter){
+                /*remove MainBox，换号登录先去掉之前的，然后在下面的代码中创建一个新的*/
+                router.removeRoute("MainBox")
                 ConfigRouter()
                 next({
                     path:to.fullPath
@@ -60,9 +58,15 @@ router.beforeEach((to, from, next)=>{
 })
 
 const ConfigRouter = ()=>{
+    /*创建MainBox*/
+    router.addRoute({
+        path: '/MainBox',
+        name: 'MainBox',
+        component: ()=>import('@/views/MainBox.vue')
+    })
+
     let {changeRouter} = useRouterStore()
     RouterConfig.forEach(item=>{
-        console.log(item.path)
         if(checkPermission(item.path)){
             router.addRoute("MainBox", item)
         }

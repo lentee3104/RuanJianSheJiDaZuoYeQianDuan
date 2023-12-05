@@ -2,7 +2,7 @@ import Home from "@/views/home/Home.vue";
 
 const routers = [
     {
-        path:'/index',
+        path:'/Home',
         component:Home
     },
     {
