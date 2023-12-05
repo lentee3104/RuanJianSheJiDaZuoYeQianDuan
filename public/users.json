@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "username": "business",
+    "password": "123",
+    "role": {
+      "roleName": "商家",
+      "roleType": 1,
+      "rights": [
+        "/Login",
+        "/MainBox",
+        "/Home",
+        "/business/businessPage",
+        "/business/itemsManagement",
+        "/business/shopManagement"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "username": "customer",
+    "password": "123",
+    "role": {
+      "roleName": "顾客",
+      "roleType": 2,
+      "rights": [
+        "/Login",
+        "/MainBox",
+        "/Home",
+        "/customer/customerPage",
+        "/customer/myOrder",
+        "/customer/recommend"
+      ]
+    }
+  }
+]

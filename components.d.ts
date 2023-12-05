@@ -7,23 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    BusinessInfo: typeof import('./src/components/BusinessInfo.vue')['default']
-    BusinessList: typeof import('./src/components/BusinessList.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
-    Index: typeof import('./src/components/Index.vue')['default']
-    Login: typeof import('./src/components/Login.vue')['default']
-    Order: typeof import('./src/components/Order.vue')['default']
-    OrderList: typeof import('./src/components/OrderList.vue')['default']
-    Payment: typeof import('./src/components/Payment.vue')['default']
-    Register: typeof import('./src/components/Register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TaskInput: typeof import('./src/Components_page/TaskInput.vue')['default']
-    TaskItem: typeof import('./src/Components_page/TaskItem.vue')['default']
-    TaskList: typeof import('./src/Components_page/TaskList.vue')['default']
   }
 }

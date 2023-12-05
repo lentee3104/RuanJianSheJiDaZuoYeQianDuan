@@ -2,50 +2,25 @@ import {createRouter, createWebHashHistory} from "vue-router";
 
 import type{RouteRecord, RouteRecordRaw} from "vue-router";
 
-const routes:Array<RouteRecordRaw> = [
+import RouterConfig from './config'
+import {useRouterStore} from "@/store/useRouterStore";
+import {useUserStore} from "@/store/useUserStore";
+
+const routes = [
     {
-        path:"/",
-        component:()=>import('@/Components_page/Login.vue')
+        path:"/Login",
+        name:"Login",
+        component:()=>import('@/views/Login.vue')
     },
     {
-        path:"/Register",
-        component:()=>import('@/Components_page/Register.vue')
+        path:"/MainBox",
+        name:"MainBox",
+        component:()=>import('@/views/MainBox.vue')
     },
     {
-        path:"/BusinessInfo",
-        component:()=>import('@/Components_page/BusinessInfo.vue')
-    },
-    {
-        path:"/BusinessList",
-        component:()=>import('@/Components_page/BusinessList.vue')
-    },
-    {
-        path:"/Index",
-        component:()=>import('@/Components_page/Index.vue')
-    },
-    {
-        path:"/Order",
-        component:()=>import('@/Components_page/Order.vue')
-    },
-    {
-        path:"/OrderList",
-        component:()=>import('@/Components_page/OrderList.vue')
-    },
-    {
-        path:"/Payment",
-        component:()=>import('@/Components_page/Payment.vue')
-    },
-    {
-        path:"/UserAddress",
-        component:()=>import('@/Components_page/UserAddress.vue')
-    },
-    {
-        path:"/AddUserAddress",
-        component:()=>import('@/Components_page/AddUserAddress.vue')
-    },
-    {
-        path:"/EditUserAddress",
-        component:()=>import('@/Components_page/EditUserAddress.vue')
+        path:"/Home",
+        name:"Home",
+        component:()=>import('@/views/home/Home.vue')
     },
 
 ]
@@ -54,5 +29,67 @@ const router = createRouter({
     history:createWebHashHistory(),
     routes
 })
+
+/*路由拦截*/
+router.beforeEach((to, from, next)=>{
+    const {isGetterRouter} = useRouterStore()
+    const {user} = useUserStore()
+
+   /* 若没有登陆过*/
+    if(to.name === "Login"){
+        next()
+    }else{
+        if(!user.role){
+            next({
+                path:"/Login"
+            })
+        }else{
+            /*第一次配置路由时才会调用ConfigRouter*/
+            if(!isGetterRouter){
+                ConfigRouter()
+                next({
+                    path:to.fullPath
+                })
+            }else {
+                next()
+            }
+
+        }
+    }
+
+})
+
+const ConfigRouter = ()=>{
+    let {changeRouter} = useRouterStore()
+    RouterConfig.forEach(item=>{
+        console.log(item.path)
+        if(checkPermission(item.path)){
+            router.addRoute("MainBox", item)
+        }
+    })
+
+    /*重定向*/
+    router.addRoute("MainBox",{
+        path:"/",
+        redirect:"/Home"
+    })
+
+    /*404*/
+    router.addRoute("MainBox",{
+        path:"/:pathMatch(.*)*",
+        name:"not found",
+        component:()=>import('@/views/notfound/NotFound.vue')
+    })
+
+    /*console.log(router.getRoutes())*/
+
+    changeRouter(true)
+}
+
+const checkPermission = (path:string)=>{
+    const {user}= useUserStore()
+
+    return user.role.rights.includes(path)
+}
 
 export default router
