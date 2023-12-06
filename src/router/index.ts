@@ -18,7 +18,6 @@ const routes = [
         component:()=>import('@/views/MainBox.vue')
     },
 
-
 ]
 
 const router = createRouter({

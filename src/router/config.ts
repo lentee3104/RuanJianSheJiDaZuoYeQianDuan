@@ -3,7 +3,7 @@ import Home from "@/views/home/Home.vue";
 const routers = [
     {
         path:'/Home',
-        component:Home
+        component:()=>import('@/views/home/Home.vue')
     },
     {
         path:"/business/businessPage",

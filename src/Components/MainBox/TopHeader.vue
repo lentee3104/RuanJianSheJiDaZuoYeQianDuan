@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 import {useUserStore} from "@/store/useUserStore";
 import {useRouter} from "vue-router";
 import {useRouterStore} from "@/store/useRouterStore";
@@ -19,28 +17,13 @@ const handleExit = ()=>{
   /*跳转到登陆页面*/
   router.push("/Login")
 }
-
 </script>
 
 <template>
-<!--  <div>
-    MainBox
+<!--  <div>header</div>-->
+  <el-header>herder
     <el-button @click="handleExit">退出</el-button>
-    <router-view></router-view>
-  </div>-->
-    <div class="common-layout">
-      <el-container style="height: 100vh">
-        <side-menu></side-menu>
-        <el-container direction="vertical">
-          <top-header></top-header>
-          <el-main>
-            <el-scrollbar><!--这是滚动条-->
-              <router-view></router-view>
-            </el-scrollbar>
-          </el-main>
-        </el-container>
-      </el-container>
-    </div>
+  </el-header>
 </template>
 
 <style scoped>
