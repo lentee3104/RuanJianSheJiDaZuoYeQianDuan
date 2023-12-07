@@ -4,8 +4,9 @@
 import {useUserStore} from "@/store/useUserStore";
 import {useRouter} from "vue-router";
 import {useRouterStore} from "@/store/useRouterStore";
-import SideMenu from "@/Components/MainBox/SideMenu.vue";
-import TopHeader from "@/Components/MainBox/TopHeader.vue";
+import SideMenu from "@/Components/MainBox/businessSideMenu.vue";
+import TopHeader from "@/Components/MainBox/businessTopHeader.vue";
+import BusinessSideMenu from "@/Components/MainBox/businessSideMenu.vue";
 
 const {changeUser} = useUserStore()
 const router = useRouter()
@@ -20,6 +21,11 @@ const handleExit = ()=>{
   router.push("/Login")
 }
 
+
+// 从localStorage中获取changeUser值
+const changeUserString:string = localStorage.getItem('roleType')!;
+const role = parseInt(changeUserString)
+
 </script>
 
 <template>
@@ -30,7 +36,8 @@ const handleExit = ()=>{
   </div>-->
     <div class="common-layout">
       <el-container style="height: 100vh">
-        <side-menu></side-menu>
+        <business-side-menu v-if="role===1"></business-side-menu>
+
         <el-container direction="vertical">
           <top-header></top-header>
           <el-main>

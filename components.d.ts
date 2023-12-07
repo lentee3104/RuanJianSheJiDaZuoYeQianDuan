@@ -24,5 +24,7 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SideMenu: typeof import('./src/components/MainBox/SideMenu.vue')['default']
+    TopHeader: typeof import('./src/components/MainBox/TopHeader.vue')['default']
   }
 }

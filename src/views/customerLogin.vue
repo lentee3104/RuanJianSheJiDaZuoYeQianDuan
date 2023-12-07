@@ -8,31 +8,6 @@ import axios from "axios";
 const {changeUser} = useUserStore()
 const router = useRouter()
 
-const handleLoginBusiness = (businessName:String) => {
-  /*设置local storage为business权限*/
-  /*pinia默认存在内存，同步到本地存储进行持久化*/
-  changeUser({
-    "username": businessName,
-    "role": {
-      "roleName": "商家",
-      "roleType": 1,
-      "rights": [
-        "/Login",
-        "/MainBox",
-        "/Home",
-        "/business/businessPage",
-        "/business/itemsManagement",
-        "/business/shopManagement"
-      ]
-    }
-  })
-  localStorage.setItem("roleType","1")
-  const changeUserString = localStorage.getItem('roleType');
-  if(changeUserString) console.log("success storage")
-
-  router.push('/business/businessPage')
-}
-
 const handleLoginCustomer = (customer:String) => {
   /*设置local storage为customer权限*/
   changeUser({
@@ -54,32 +29,6 @@ const handleLoginCustomer = (customer:String) => {
   router.push('/customer/customerPage')
 }
 
-
-
-async function businessLogin(businessName:String, password:String) {
-  try {
-    const response = await axios.post('http://localhost:5000/Login', null, {
-      params: {
-        type: 0,
-        businessName: businessName,
-        password: password
-      }
-    });
-
-    // 处理成功响应
-    console.log('登录成功');
-    console.log(response.data.message+"你成功了！");
-
-    localStorage.setItem('userName', response.data.businessName);
-    handleLoginBusiness(response.data.businessName);
-
-  } catch (error:any) {
-    // 处理错误响应
-    console.error('登录失败');
-    console.error(error.response.data);
-  }
-}
-
 async function customerLogin(customerName:String, password:String) {
   try {
     const response = await axios.post('http://localhost:5000/Login', null, {
@@ -95,7 +44,7 @@ async function customerLogin(customerName:String, password:String) {
     console.log(response.data.message+"你成功了！");
 
     localStorage.setItem('userName', response.data.customerName);
-    handleLoginBusiness(response.data.customerName);
+    handleLoginCustomer(response.data.customerName);
 
   } catch (error:any) {
     // 处理错误响应
@@ -146,9 +95,6 @@ const rules = reactive({
         </el-form-item>
 
         <div class="flex justify-center">
-          <el-form-item>
-            <el-button size="large" @click="businessLogin(ruleForm.username,ruleForm.password)">登录-business</el-button>
-          </el-form-item>
           <el-form-item>
             <el-button size="large" @click="customerLogin(ruleForm.username,ruleForm.password)">登录-customer</el-button>
           </el-form-item>

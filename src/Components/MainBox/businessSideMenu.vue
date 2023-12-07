@@ -6,17 +6,13 @@ import {
   Menu as IconMenu,
   Location,
 } from '@element-plus/icons-vue'
+import {useRouter} from "vue-router";
 
 const dataList = ref([])
+const router = useRouter()
 
-onMounted(() => {
-  getList()
-})
-
-const getList = async () => {
-  var res = await axios.get("/rights.json")
-  console.log(res.data)
-  dataList.value = res.data
+const toPage = (url:string)=>{
+  router.push(url)
 }
 </script>
 
@@ -31,17 +27,17 @@ const getList = async () => {
       <el-menu style="height: 100vh"
           default-active="1"
           class="el-menu-vertical-demo">
-        <el-menu-item index="1">
+        <el-menu-item index="1"  @click="toPage('/business/shopManagement')">
           <el-icon>
             <icon-menu/>
           </el-icon>
           <span class="text-2xl font-400">我的门店</span>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="2"  @click="toPage('/business/itemsManagement')">
           <el-icon> <!--这里是图标-->
             <icon-menu/>
           </el-icon>
-          <span class="text-2xl font-400">我的商品</span>
+          <span class="text-2xl font-400" >我的商品</span>
         </el-menu-item>
       </el-menu>
     </el-scrollbar>

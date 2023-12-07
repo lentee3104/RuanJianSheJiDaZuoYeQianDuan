@@ -2,8 +2,8 @@
 import {useUserStore} from "@/store/useUserStore";
 import {useRouter} from "vue-router";
 import {useRouterStore} from "@/store/useRouterStore";
-import SideMenu from "@/Components/MainBox/SideMenu.vue";
-import TopHeader from "@/Components/MainBox/TopHeader.vue";
+import SideMenu from "@/Components/MainBox/businessSideMenu.vue";
+import TopHeader from "@/Components/MainBox/businessTopHeader.vue";
 
 const {changeUser} = useUserStore()
 const router = useRouter()

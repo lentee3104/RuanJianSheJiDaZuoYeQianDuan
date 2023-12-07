@@ -1,4 +1,4 @@
-<script setup lang="ts">
+Login.vue<script setup lang="ts">
 import {useUserStore} from "@/store/useUserStore";
 import {useRouter} from "vue-router";
 import {reactive, ref} from "vue";
@@ -33,29 +33,6 @@ const handleLoginBusiness = (businessName:String) => {
   router.push('/business/businessPage')
 }
 
-const handleLoginCustomer = (customer:String) => {
-  /*设置local storage为customer权限*/
-  changeUser({
-    "username": customer,
-    "role": {
-      "roleName": "顾客",
-      "roleType": 2,
-      "rights": [
-        "/Login",
-        "/MainBox",
-        "/Home",
-        "/customer/customerPage",
-        "/customer/myOrder",
-        "/customer/recommend"
-      ]
-    }
-  })
-  localStorage.setItem("roleType","2")
-  router.push('/customer/customerPage')
-}
-
-
-
 async function businessLogin(businessName:String, password:String) {
   try {
     const response = await axios.post('http://localhost:5000/Login', null, {
@@ -72,30 +49,6 @@ async function businessLogin(businessName:String, password:String) {
 
     localStorage.setItem('userName', response.data.businessName);
     handleLoginBusiness(response.data.businessName);
-
-  } catch (error:any) {
-    // 处理错误响应
-    console.error('登录失败');
-    console.error(error.response.data);
-  }
-}
-
-async function customerLogin(customerName:String, password:String) {
-  try {
-    const response = await axios.post('http://localhost:5000/Login', null, {
-      params: {
-        type: 1,
-        customerName: customerName,
-        password: password
-      }
-    });
-
-    // 处理成功响应
-    console.log('登录成功');
-    console.log(response.data.message+"你成功了！");
-
-    localStorage.setItem('userName', response.data.customerName);
-    handleLoginBusiness(response.data.customerName);
 
   } catch (error:any) {
     // 处理错误响应
@@ -148,9 +101,6 @@ const rules = reactive({
         <div class="flex justify-center">
           <el-form-item>
             <el-button size="large" @click="businessLogin(ruleForm.username,ruleForm.password)">登录-business</el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button size="large" @click="customerLogin(ruleForm.username,ruleForm.password)">登录-customer</el-button>
           </el-form-item>
         </div>
 
