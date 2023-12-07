@@ -54,18 +54,29 @@ async function addShop() {
 
 
 /*这里是删除功能*/
-const confirmDelete = () => {
+const confirmDelete = (shopName:any) => {
   if (window.confirm('确定要删除该门店吗？')) {
-    deleteShop();
+    deleteShop(shopName);
   }
 };
 
-async function deleteShop (){
-  // 调用删除方法，执行删除操作
-  // 在这里调用后端接口或执行其他逻辑
-  // 例如：axios.delete('/shops/' + shopId)
-  // 删除成功后，可以执行一些操作，如重载门店列表等
+async function deleteShop (shopName:any){
+  try {
+    const response = await axios.post('http://localhost:5000/DeleteShop', null,{
+      params:{
+        shop_name: shopName,
+      }
+    });
 
+    console.log("删除店铺成功");
+    console.log(response.data);
+
+    // 添加成功后重新获取商家店铺列表数据
+    await getBusinessShopList();
+  } catch (error: any) {
+    console.error('添加店铺失败');
+    console.error(error.response.data);
+  }
 };
 </script>
 
@@ -85,7 +96,7 @@ async function deleteShop (){
       <p>Shop ID: {{ shop.shopId }}</p>
       <p>Shop Name: {{ shop.shopName }}</p>
       <p>Business ID: {{ shop.businessId }}</p>
-      <el-button @click="confirmDelete">删除</el-button>
+      <el-button @click="confirmDelete(shop.shopName)">删除</el-button>
       <!-- 这里可以根据需要添加其他展示信息 -->
     </div>
   </div>
