@@ -17,6 +17,16 @@ const routes = [
         name:"MainBox",
         component:()=>import('@/views/MainBox.vue')
     },
+    {
+        path:"/businessLogin",
+        name:"businessLogin",
+        component:()=>import('@/Components/Login/businessLogin.vue')
+    },
+    {
+        path:"/customerLogin",
+        name:"customerLogin",
+        component:()=>import('@/Components/Login/customerLogin.vue')
+    }
 
 ]
 
@@ -31,7 +41,7 @@ router.beforeEach((to, from, next)=>{
     const {user} = useUserStore()
 
    /* 若没有登陆过*/
-    if(to.name === "Login"){
+    if(to.name === "Login" || to.name==="businessLogin" || to.name==="customerLogin"){
         next()
     }else{
         if(!user.role){

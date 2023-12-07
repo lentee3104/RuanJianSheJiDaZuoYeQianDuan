@@ -5,8 +5,9 @@ import {useUserStore} from "@/store/useUserStore";
 import {useRouter} from "vue-router";
 import {useRouterStore} from "@/store/useRouterStore";
 import SideMenu from "@/Components/MainBox/businessSideMenu.vue";
-import TopHeader from "@/Components/MainBox/businessTopHeader.vue";
+import TopHeader from "@/Components/MainBox/TopHeader.vue";
 import BusinessSideMenu from "@/Components/MainBox/businessSideMenu.vue";
+import CustomerSideMenu from "@/Components/MainBox/customerSideMenu.vue";
 
 const {changeUser} = useUserStore()
 const router = useRouter()
@@ -37,7 +38,7 @@ const role = parseInt(changeUserString)
     <div class="common-layout">
       <el-container style="height: 100vh">
         <business-side-menu v-if="role===1"></business-side-menu>
-
+        <customer-side-menu v-else-if="role===2"></customer-side-menu>
         <el-container direction="vertical">
           <top-header></top-header>
           <el-main>

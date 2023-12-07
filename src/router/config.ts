@@ -10,8 +10,8 @@ const routers = [
         component:()=>import('@/views/business/businessPage.vue')
     },
     {
-        path:"/business/itemsManagement",
-        component:()=>import('@/views/business/itemsManagement.vue')
+        path:"/business/itemManagement",
+        component:()=>import('@/views/business/itemManagement.vue')
     },
     {
         path:"/business/shopManagement",

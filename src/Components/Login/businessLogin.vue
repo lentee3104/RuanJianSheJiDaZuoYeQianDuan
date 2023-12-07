@@ -1,4 +1,4 @@
-<script setup lang="ts">
+Login.vue<script setup lang="ts">
 import {useUserStore} from "@/store/useUserStore";
 import {useRouter} from "vue-router";
 import {reactive, ref} from "vue";
@@ -8,33 +8,37 @@ import axios from "axios";
 const {changeUser} = useUserStore()
 const router = useRouter()
 
-const handleLoginCustomer = (customer:String) => {
-  /*设置local storage为customer权限*/
+const handleLoginBusiness = (businessName:String) => {
+  /*设置local storage为business权限*/
+  /*pinia默认存在内存，同步到本地存储进行持久化*/
   changeUser({
-    "username": customer,
+    "username": businessName,
     "role": {
-      "roleName": "顾客",
-      "roleType": 2,
+      "roleName": "商家",
+      "roleType": 1,
       "rights": [
         "/Login",
         "/MainBox",
         "/Home",
-        "/customer/customerPage",
-        "/customer/myOrder",
-        "/customer/recommend"
+        "/business/businessPage",
+        "/business/itemManagement",
+        "/business/shopManagement"
       ]
     }
   })
-  localStorage.setItem("roleType","2")
-  router.push('/customer/customerPage')
+  localStorage.setItem("roleType","1")
+  const changeUserString = localStorage.getItem('roleType');
+  if(changeUserString) console.log("success storage")
+
+  router.push('/business/businessPage')
 }
 
-async function customerLogin(customerName:String, password:String) {
+async function businessLogin(businessName:String, password:String) {
   try {
-    const response = await axios.post('http://localhost:5000/Login', null, {
+    const response = await axios.post('http://localhost:5000/businessLogin', null, {
       params: {
-        type: 1,
-        customerName: customerName,
+        type: 0,
+        business_name: businessName,
         password: password
       }
     });
@@ -43,8 +47,11 @@ async function customerLogin(customerName:String, password:String) {
     console.log('登录成功');
     console.log(response.data.message+"你成功了！");
 
-    localStorage.setItem('userName', response.data.customerName);
-    handleLoginCustomer(response.data.customerName);
+    const {business_id} = response.data;
+
+    localStorage.setItem('userName', businessName);
+    localStorage.setItem('businessId',business_id);
+    handleLoginBusiness(businessName);
 
   } catch (error:any) {
     // 处理错误响应
@@ -96,7 +103,7 @@ const rules = reactive({
 
         <div class="flex justify-center">
           <el-form-item>
-            <el-button size="large" @click="customerLogin(ruleForm.username,ruleForm.password)">登录-customer</el-button>
+            <el-button size="large" @click="businessLogin(ruleForm.username,ruleForm.password)">登录-business</el-button>
           </el-form-item>
         </div>
 
