@@ -18,6 +18,11 @@ const routers = [
         component:()=>import('@/views/business/shopManagement.vue')
     },
     {
+        path:"/business/shopItemControl",
+        name:"business/shopItemControl",
+        component:()=>import('@/views/business/shopItemControl.vue')
+    },
+    {
         path:"/customer/customerPage",
         component:()=>import('@/views/customer/customerPage.vue')
     },

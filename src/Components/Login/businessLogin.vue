@@ -22,7 +22,8 @@ const handleLoginBusiness = (businessName:String) => {
         "/Home",
         "/business/businessPage",
         "/business/itemManagement",
-        "/business/shopManagement"
+        "/business/shopManagement",
+        "/business/shopItemControl"
       ]
     }
   })

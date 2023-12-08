@@ -25,7 +25,6 @@ const toPage = (url:string)=>{
       </div>
 
       <el-menu style="height: 100vh"
-          default-active="1"
           class="el-menu-vertical-demo">
         <el-menu-item index="1"  @click="toPage('/business/shopManagement')" class="mb-5">
           <el-icon>
