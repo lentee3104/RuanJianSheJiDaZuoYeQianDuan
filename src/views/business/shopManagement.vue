@@ -81,7 +81,6 @@ async function deleteShop (shopName:any){
 };
 
 /*进入shop详情页管理商品部分*/
-
 const setItem = (shop: any) => {
   router.push({
     name: 'business/shopItemControl',

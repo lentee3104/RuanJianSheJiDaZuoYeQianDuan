@@ -1,4 +1,5 @@
 import Home from "@/views/home/Home.vue";
+import { componentSizeMap } from "element-plus";
 
 const routers = [
     {
@@ -33,6 +34,11 @@ const routers = [
     {
         path:"/customer/recommend",
         component:()=>import('@/views/customer/recommend.vue')
+    },
+    {
+        path:"/customer/customerSelectItemInShop",
+        name:"customer/customerSelectItemInShop",
+        component:()=>import('@/views/customer/customerSelectItemInShop.vue')
     },
 
 ]

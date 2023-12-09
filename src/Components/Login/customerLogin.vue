@@ -21,7 +21,8 @@ const handleLoginCustomer = (customer:String) => {
         "/Home",
         "/customer/customerPage",
         "/customer/myOrder",
-        "/customer/recommend"
+        "/customer/recommend",
+        "/customer/customerSelectItemInShop",
       ]
     }
   })
@@ -29,7 +30,7 @@ const handleLoginCustomer = (customer:String) => {
   router.push('/customer/customerPage')
 }
 
-async function customerLogin(customerName:String, password:String) {
+async function customerLogin(customerName:string, password:String) {
   try {
     const response = await axios.post('http://localhost:5000/customerLogin', null, {
       params: {

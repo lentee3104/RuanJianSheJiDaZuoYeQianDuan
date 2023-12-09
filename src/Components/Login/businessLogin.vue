@@ -34,7 +34,7 @@ const handleLoginBusiness = (businessName:String) => {
   router.push('/business/businessPage')
 }
 
-async function businessLogin(businessName:String, password:String) {
+async function businessLogin(businessName:string, password:String) {
   try {
     const response = await axios.post('http://localhost:5000/businessLogin', null, {
       params: {
