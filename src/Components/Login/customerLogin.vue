@@ -23,6 +23,7 @@ const handleLoginCustomer = (customer:String) => {
         "/customer/myOrder",
         "/customer/recommend",
         "/customer/customerSelectItemInShop",
+        "/customer/customerPayment.vue",
       ]
     }
   })

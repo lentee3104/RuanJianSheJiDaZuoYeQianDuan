@@ -40,6 +40,11 @@ const routers = [
         name:"customer/customerSelectItemInShop",
         component:()=>import('@/views/customer/customerSelectItemInShop.vue')
     },
+    {
+        path:"/customer/customerPayment.vue",
+        name:"customer/customerPayment.vue",
+        component:()=>import('@/views/customer/customerPayment.vue')
+    },
 
 ]
 
