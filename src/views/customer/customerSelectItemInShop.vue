@@ -151,12 +151,12 @@ const getItemQuantity = (itemId: number) => {
     if(matchingObject.item_quantity == 0){
       const matchingIndex = listOrderList.value.findIndex(item => item.item_id === itemId)
       listOrderList.value.splice(matchingIndex, itemId);
-      return 0
+      return '0'
     }else {
       return matchingObject.item_quantity
     }
   }
-  return 0
+  return '0'
 };
 
 /*减少数量*/
