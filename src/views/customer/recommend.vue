@@ -6,6 +6,7 @@ import routers from "@/router/config";
 import router from "@/router";
 
 const shopList = ref([]);
+
 onMounted(() => {
   getAllShopList()
 
@@ -25,11 +26,11 @@ async function getAllShopList(){
   }
 }
 
-const toShop = (shopId: number) =>{
+const toShop = (shopId: any) =>{
   router.push({
     name: 'customer/customerSelectItemInShop',
     query: {
-      shopId: shopId.toString()
+      shopId: shopId
     }
   });
 }

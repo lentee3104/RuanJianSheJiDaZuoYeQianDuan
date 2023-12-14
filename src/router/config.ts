@@ -29,6 +29,7 @@ const routers = [
     },
     {
         path:"/customer/myOrder",
+        name:"customer/myOrder",
         component:()=>import('@/views/customer/myOrder.vue')
     },
     {
@@ -41,8 +42,8 @@ const routers = [
         component:()=>import('@/views/customer/customerSelectItemInShop.vue')
     },
     {
-        path:"/customer/customerPayment.vue",
-        name:"customer/customerPayment.vue",
+        path:"/customer/customerPayment",
+        name:"customer/customerPayment",
         component:()=>import('@/views/customer/customerPayment.vue')
     },
 

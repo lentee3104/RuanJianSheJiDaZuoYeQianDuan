@@ -6,7 +6,7 @@ import axios from "axios";
 import router from "@/router";
 
 const route = useRoute()
-const shopId = parseInt(<string>route.query.shopId)
+const shopId = parseInt(route.query.shopId)
 const customerId = parseInt(localStorage.getItem("customerId") ?? '')
 const shopItemList = ref([])
 let orderId = ref(0)
@@ -56,7 +56,7 @@ async function getShopItem() {
 若没有则在查询订单的函数内部直接嵌套新建订单的功能，用户得到数据库中order_table的主键‘order_id’*/
 async function getOrderTable() {
   try {
-    const response = await axios.post('http://localhost:5000/FindOrderTable', null, {
+    const response = await axios.post('http://localhost:5000/FindOrderTableByCustomerIdShopIdOrderState', null, {
       params: {
         customer_id: customerId,
         shop_id: shopId,
@@ -125,9 +125,11 @@ async function createOrderTable() {
   try {
     const response = await axios.post('http://localhost:5000/AddOrderTable', null, {
       params: {
+        order_id:0,
         customer_id: customerId,
         shop_id: shopId,
-        order_state: 0
+        order_state: 0,
+        order_cost: 0.0
       }
     })
     orderTable.value = response.data
@@ -207,13 +209,16 @@ async function saveOrder(id:number, item_id:number, order_id:number, item_quanti
 
 /*跳转到支付页面*/
 const toPayment = () =>{
-  console.log(JSON.stringify(listOrderList));
-  /*router.push({
-    name: 'customer/customerPayment.vue',
-    query: {
+  console.log("跳转之前的orderId是：" + orderId.value)
+  saveOrderList()
 
+  router.push({
+    name: 'customer/customerPayment',
+    query: {
+      orderId: orderId.value.toString(),
+      shopId: shopId.toString()
     }
-  })*/
+  })
 }
 
 </script>
