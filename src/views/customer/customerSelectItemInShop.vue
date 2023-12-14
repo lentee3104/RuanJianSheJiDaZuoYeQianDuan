@@ -148,13 +148,7 @@ async function createOrderTable() {
 const getItemQuantity = (itemId: number) => {
   const matchingObject = listOrderList.value.find(item => item.item_id === itemId);
   if(matchingObject){
-    if(matchingObject.item_quantity == 0){
-      const matchingIndex = listOrderList.value.findIndex(item => item.item_id === itemId)
-      listOrderList.value.splice(matchingIndex, itemId);
-      return '0'
-    }else {
       return matchingObject.item_quantity
-    }
   }
   return '0'
 };
