@@ -78,7 +78,7 @@ async function deleteShop (shopName:any){
     console.error('删除店铺失败');
     console.error(error.response.data);
   }
-};
+}
 
 /*进入shop详情页管理商品部分*/
 const setItem = (shop: any) => {
@@ -91,6 +91,16 @@ const setItem = (shop: any) => {
     }
   });
 };
+
+const orderControl = (shopId:number, shopName:string)=>{
+  router.push({
+    name:"business/businessOrderControl",
+    query: {
+      shopId: shopId,
+      shopName: shopName
+    }
+  })
+}
 
 </script>
 
@@ -111,7 +121,7 @@ const setItem = (shop: any) => {
       <p>Shop Name: {{ shop.shopName }}</p>
       <p>Business ID: {{ shop.businessId }}</p>
       <el-button @click="setItem(shop)">商品设置</el-button>
-      <el-button @click="orderControl(shop.shopName)">查看订单</el-button>
+      <el-button @click="orderControl(shop.shopId, shop.shopName)">查看订单</el-button>
       <el-button @click="confirmDelete(shop.shopName)">删除</el-button>
       <!-- 这里可以根据需要添加其他展示信息 -->
     </div>

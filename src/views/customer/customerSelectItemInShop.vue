@@ -208,7 +208,7 @@ async function saveOrder(id:number, item_id:number, order_id:number, item_quanti
 }
 
 /*跳转到支付页面*/
-const toPayment = () =>{
+const toPayment = ()=>{
   console.log("跳转之前的orderId是：" + orderId.value)
   saveOrderList()
 
