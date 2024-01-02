@@ -27,6 +27,8 @@ async function getAllShopList(){
 }
 
 const toShop = (shopId: any) =>{
+  console.log("toShop(shop.shopId)" + shopId)
+  localStorage.setItem("shopId", shopId)
   router.push({
     name: 'customer/customerSelectItemInShop',
     query: {
@@ -41,14 +43,22 @@ const toShop = (shopId: any) =>{
   <div>
     这是客户购买的推荐页
   </div>
-  <div class="flex-col items-center ">
-    <div v-for="shop in shopList" :key="shop.shopId" class="flex items-center gap-x-4">
-      <p>Item ID: {{ shop.shopId }}</p>
-      <p>Item Name: {{ shop.shopName }}</p>
-      <p>Business ID: {{ shop.businessId }}</p>
-      <el-button @click="toShop(shop.shopId)">挑选商品</el-button>
+  <div class="flex justify-between flex-wrap">
+    <div v-for="shop in shopList" class="flex w-[240px] h-[300px] border-purple border-2 m-8 justify-center">
+      <div class="w-full h-full flex-col justify-center items-center">
+        <div class="flex justify-center text-3xl my-6">
+          <p>{{ shop.shopId }}</p>
+        </div>
+        <div class="flex justify-center text-3xl my-6">
+          <p>{{ shop.shopName }}</p>
+        </div>
+        <div class="flex justify-center text-3xl my-6">
+          <el-button @click="toShop(shop.shopId)">挑选商品</el-button>
+        </div>
+      </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>

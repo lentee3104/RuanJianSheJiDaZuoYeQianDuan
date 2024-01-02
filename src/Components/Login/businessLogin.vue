@@ -47,9 +47,9 @@ async function businessLogin(businessName:string, password:String) {
 
     // 处理成功响应
     console.log('登录成功');
-    console.log(response.data.message+"你成功了！");
-
-    const {business_id} = response.data;
+    console.log(response.data.businessName+"你成功了！");
+    const business_id = response.data.businessId
+    console.log("登陆后id为："+business_id)
 
     localStorage.setItem('userName', businessName);
     localStorage.setItem('businessId',business_id);

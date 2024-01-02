@@ -33,10 +33,11 @@ async function getBusinessItemList() {
 // 新增店铺
 let newItemName = ref("")
 let newItemPrice = ref("")
+
 async function addItem() {
   try {
-    const response = await axios.post('http://localhost:5000/AddItem', null,{
-      params:{
+    const response = await axios.post('http://localhost:5000/AddItem', null, {
+      params: {
         item_name: newItemName.value,
         item_price: newItemPrice.value,
         business_id: business_id,
@@ -57,31 +58,32 @@ async function addItem() {
 </script>
 
 <template>
-  <div>
-    这是商品管理页面
-  </div>
-  <div class="flex-col items-center ">
-    <div>
-      <div class="flex items-center gap-x-8">
-        <div class="flex items-center">
-          <div class="w-[110px]">新增商品名称:</div>
-          <el-input style="width: 200px" v-model="newItemName" type="text" required />
+  <div class="flex-col w-[100%] justify-center items-center gap-y-10" style="display: flex; justify-content: center;">
+
+    <div class="flex items-center text-2xl gap-x-16">
+        <div class="flex items-center gap-x-4">
+          <div class="w-auto">新增商品名称:</div>
+          <el-input style="width: 200px" v-model="newItemName" type="text" required/>
         </div>
-        <div class="flex items-center">
-          <div class="w-[110px]">新增商品价格:</div>
-          <el-input style="width: 100px" v-model="newItemPrice" type="number" required />
+        <div class="flex items-center gap-x-4">
+          <div class="w-auto">新增商品价格:</div>
+          <el-input style="width: 100px" v-model="newItemPrice" type="number" required/>
         </div>
-        <el-button @click="addItem">添加商品</el-button>
-      </div>
+        <el-button type="primary" @click="addItem" style="font-size: 20px">添加商品</el-button>
     </div>
 
-    <div v-for="item in itemList" :key="item.itemId" class="flex items-center gap-x-4">
-      <p>Item ID: {{ item.itemId }}</p>
-      <p>Item Name: {{ item.itemName }}</p>
-      <p>Item Price: {{ item.itemPrice }}</p>
-      <p>Business ID: {{ item.businessId }}</p>
-<!--      <el-button @click="confirmDelete(item.itemName)">删除</el-button>-->
-      <!-- 这里可以根据需要添加其他展示信息 -->
+    <div>
+      <el-table :data="itemList" style="width: 100% ;font-size: 20px">
+        <el-table-column fixed align="center" type="index" label="序号" width="200"/>
+        <el-table-column prop="itemName" label="itemName" align="center" width="300"/>
+        <el-table-column prop="itemPrice" label="itemPrice" align="center" width="300"/>
+        <el-table-column fixed="right" label="Operations" align="center" width="300">
+          <template #default>
+            <el-button style="font-size: 20px" link type="primary" size="large" @click="">Detail</el-button>
+            <el-button style="font-size: 20px" link type="primary" size="large" @click="">Edit</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>

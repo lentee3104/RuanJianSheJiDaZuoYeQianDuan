@@ -45,10 +45,10 @@ async function customerLogin(customerName:string, password:String) {
     console.log('登录成功');
     console.log(response.data.message+"你成功了！");
 
-    const {customer_id} = response.data;
+
 
     localStorage.setItem('userName', customerName);
-    localStorage.setItem('customerId', customer_id)
+    localStorage.setItem('customerId', response.data.customerId)
     handleLoginCustomer(customerName);
 
   } catch (error:any) {

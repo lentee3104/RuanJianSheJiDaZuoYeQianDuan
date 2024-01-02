@@ -26,17 +26,18 @@ async function getBusinessShopList() {
     shopList.value = response.data;
   } catch (error: any) {
     // 处理错误响应
-    console.error('登录失败');
+    console.error('查询失败');
     console.error(error.response.data);
   }
 };
 
 // 新增店铺
 let newShopName = ref("")
+
 async function addShop() {
   try {
-    const response = await axios.post('http://localhost:5000/AddShop', null,{
-      params:{
+    const response = await axios.post('http://localhost:5000/AddShop', null, {
+      params: {
         shop_name: newShopName.value,
         business_id: business_id
       }
@@ -55,16 +56,16 @@ async function addShop() {
 
 
 /*这里是删除功能*/
-const confirmDelete = (shopName:any) => {
+const confirmDelete = (shopName: any) => {
   if (window.confirm('确定要删除该门店吗？')) {
     deleteShop(shopName);
   }
 };
 
-async function deleteShop (shopName:any){
+async function deleteShop(shopName: any) {
   try {
-    const response = await axios.post('http://localhost:5000/DeleteShop', null,{
-      params:{
+    const response = await axios.post('http://localhost:5000/DeleteShop', null, {
+      params: {
         shop_name: shopName,
       }
     });
@@ -92,9 +93,9 @@ const setItem = (shop: any) => {
   });
 };
 
-const orderControl = (shopId:number, shopName:string)=>{
+const orderControl = (shopId: number, shopName: string) => {
   router.push({
-    name:"business/businessOrderControl",
+    name: "business/businessOrderControl",
     query: {
       shopId: shopId,
       shopName: shopName
@@ -106,24 +107,45 @@ const orderControl = (shopId:number, shopName:string)=>{
 
 <template>
   <div class="flex-col items-center ">
-    <div>这是店铺管理页面</div>
+<!--    <div>这是店铺管理页面</div>-->
 
     <div>
-      <label class="flex items-center">
-        <div class="w-[200px]">新增门店名称</div>
-        <el-input  v-model="newShopName" type="text" required />
-        <el-button @click="addShop">添加店铺</el-button>
+      <label class="flex items-center gap-x-4 text-2xl">
+        <div class="w-auto">新增门店名称</div>
+        <el-input size="large" style="width: 300px" v-model="newShopName" type="text" required/>
+        <el-button type="primary" size="large" @click="addShop" style="font-size: 20px">添加店铺</el-button>
       </label>
     </div>
 
+<!--
     <div v-for="shop in shopList" :key="shop.shopId" class="flex items-center gap-x-4">
-      <p>Shop ID: {{ shop.shopId }}</p>
+      &lt;!&ndash;      <p>Shop ID: {{ shop.shopId }}</p>&ndash;&gt;
       <p>Shop Name: {{ shop.shopName }}</p>
-      <p>Business ID: {{ shop.businessId }}</p>
+      &lt;!&ndash;      <p>Business ID: {{ shop.businessId }}</p>&ndash;&gt;
       <el-button @click="setItem(shop)">商品设置</el-button>
       <el-button @click="orderControl(shop.shopId, shop.shopName)">查看订单</el-button>
       <el-button @click="confirmDelete(shop.shopName)">删除</el-button>
-      <!-- 这里可以根据需要添加其他展示信息 -->
+      &lt;!&ndash; 这里可以根据需要添加其他展示信息 &ndash;&gt;
+    </div>
+-->
+
+    <div class="flex justify-between flex-wrap">
+      <div v-for="shop in shopList" class="flex w-[240px] h-[300px] border-purple border-2 m-8 justify-center">
+        <div class="w-full h-full flex-col justify-center items-center">
+          <div class="flex justify-center text-3xl my-6">
+            <p>{{ shop.shopName }}</p>
+          </div>
+          <div class="flex justify-center my-4">
+            <el-button size="large" @click="setItem(shop)">商品设置</el-button>
+          </div>
+          <div class="flex justify-center my-4">
+            <el-button size="large" @click="orderControl(shop.shopId, shop.shopName)">查看订单</el-button>
+          </div>
+          <div class="flex justify-center my-4">
+            <el-button size="large" @click="confirmDelete(shop.shopName)">删除门店</el-button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

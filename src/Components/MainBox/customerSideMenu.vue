@@ -16,11 +16,11 @@ const toPage = (url:string)=>{
 </script>
 
 <template>
-    <div class="p-4">
-      <el-aside width="200px">
+    <div class="px-0 py-4 pl-4">
+      <el-aside width="200px" >
         <el-scrollbar>
           <div class="text-3xl font-bold mb-5">
-            商家管理系统
+            用户购买系统
           </div>
 
           <el-menu style="height: 100vh"

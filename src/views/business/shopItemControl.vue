@@ -49,7 +49,7 @@ async function getBusinessItemList() {
         business_id: businessId
       }
     });
-    if(response!=null){
+    if(response != null){
       console.log("查询BusinessItemList成功");
       businessItemList.value = response.data;
       console.log(businessItemList.value)
@@ -59,11 +59,11 @@ async function getBusinessItemList() {
     console.error('查询BusinessItemList失败');
     console.error(error.response.data);
   }
-};
+}
 
 const isSelected = (itemId:number)=>{
   /*Item代表 shopItemList 数组中的每个元素*/
-  return shopItemList.value.some(Item => Item.item.itemId === itemId)
+  return shopItemList.value.some(Item => Item.itemId === itemId)
 }
 
 async function changeToSelected(itemId:number){
