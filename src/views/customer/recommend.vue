@@ -40,24 +40,27 @@ const toShop = (shopId: any) =>{
 </script>
 
 <template>
-  <div>
-    这是客户购买的推荐页
-  </div>
-  <div class="flex justify-between flex-wrap">
-    <div v-for="shop in shopList" class="flex w-[240px] h-[300px] border-purple border-2 m-8 justify-center">
-      <div class="w-full h-full flex-col justify-center items-center">
-        <div class="flex justify-center text-3xl my-6">
-          <p>{{ shop.shopId }}</p>
-        </div>
-        <div class="flex justify-center text-3xl my-6">
-          <p>{{ shop.shopName }}</p>
-        </div>
-        <div class="flex justify-center text-3xl my-6">
-          <el-button @click="toShop(shop.shopId)">挑选商品</el-button>
+  <div class="mt-10">
+    <div>
+      这是客户购买的推荐页
+    </div>
+    <div class="flex justify-between flex-wrap">
+      <div v-for="shop in shopList" class="flex w-[240px] h-[300px] border-purple border-2 m-8 justify-center">
+        <div class="w-full h-full flex-col justify-center items-center">
+          <div class="flex justify-center text-3xl my-6">
+            <p>{{ shop.shopId }}</p>
+          </div>
+          <div class="flex justify-center text-3xl my-6">
+            <p>{{ shop.shopName }}</p>
+          </div>
+          <div class="flex justify-center text-3xl my-6">
+            <el-button @click="toShop(shop.shopId)">挑选商品</el-button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 
 </template>
 

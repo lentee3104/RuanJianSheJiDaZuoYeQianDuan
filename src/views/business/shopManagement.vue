@@ -106,28 +106,12 @@ const orderControl = (shopId: number, shopName: string) => {
 </script>
 
 <template>
-  <div class="flex-col items-center ">
-<!--    <div>这是店铺管理页面</div>-->
-
-    <div>
-      <label class="flex items-center gap-x-4 text-2xl">
+  <div class="justify-center flex-col items-center">
+      <div class="flex items-center justify-center gap-x-8 text-2xl">
         <div class="w-auto">新增门店名称</div>
         <el-input size="large" style="width: 300px" v-model="newShopName" type="text" required/>
         <el-button type="primary" size="large" @click="addShop" style="font-size: 20px">添加店铺</el-button>
-      </label>
-    </div>
-
-<!--
-    <div v-for="shop in shopList" :key="shop.shopId" class="flex items-center gap-x-4">
-      &lt;!&ndash;      <p>Shop ID: {{ shop.shopId }}</p>&ndash;&gt;
-      <p>Shop Name: {{ shop.shopName }}</p>
-      &lt;!&ndash;      <p>Business ID: {{ shop.businessId }}</p>&ndash;&gt;
-      <el-button @click="setItem(shop)">商品设置</el-button>
-      <el-button @click="orderControl(shop.shopId, shop.shopName)">查看订单</el-button>
-      <el-button @click="confirmDelete(shop.shopName)">删除</el-button>
-      &lt;!&ndash; 这里可以根据需要添加其他展示信息 &ndash;&gt;
-    </div>
--->
+      </div>
 
     <div class="flex justify-between flex-wrap">
       <div v-for="shop in shopList" class="flex w-[240px] h-[300px] border-purple border-2 m-8 justify-center">

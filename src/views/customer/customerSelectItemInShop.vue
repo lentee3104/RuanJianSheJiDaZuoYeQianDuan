@@ -13,7 +13,16 @@ let orderDetail = ref({})
 let orderId = ref(0)
 let orderTable = ref([])/*主要是为了得到order_id*/
 let listOrderList = ref([])/*这里放有限数据的orderList对象数组*/
-let sumCost = ref(0)
+let orderCost = ref(0)
+
+interface OrderList{
+  orderId: number,
+  itemId: number,
+  itemQuantity: number,
+  id: number,
+  itemName: string,
+  itemPrice: number
+}
 
 onMounted(() => {
   preSet()
@@ -25,6 +34,7 @@ async function preSet(){
   await getOrderDetail()
 /*  copyList()*/
 }
+
 
 /*获取当前shop下可以售卖的商品列表*/
 async function getShopItem() {
@@ -51,182 +61,179 @@ async function getShopItem() {
 /*检查当前customer在当前shop下有没有order_state=0的订单，
 若没有则在查询订单的函数内部直接嵌套新建订单的功能，用户得到数据库中order_table的主键‘order_id’*/
 async function getOrderDetail() {
-    /*在这里查OrderDetail,查到了就存储信息，没查到就使用createOrderTable*/
-    /*OrderDetail可以查到*/
   const response = await axios.post('http://localhost:5000/ListOrderDetailByCustomerIdAndShopIdAndOrderState', null, {
-    params: {
+    params:{
       customer_id: customerId,
       shop_id: shopId,
       order_state: 0
     }
   })
-
   if(response.data.length != 0){
-    orderDetail.value = response.data
-    orderId.value = response.data.orderId
-    console.log("有未完成订单")
-    listOrderList.value = response.data[0].orderListList
+    console.log("查询OrderDetail成功")
+    console.log(response.data)
+    listOrderList.value = response.data[0].orderListDTOList
+    orderId.value = response.data[0].orderId
+    orderCost.value = response.data[0].orderCost
+    orderDetail.value = response.data[0]
   }else{
-    console.log("没有订单,需要新建")
     await createOrderTable()
   }
 }
 
-/*在OrderTable中新增订单信息*/
 async function updateOrderTable() {
-  try {
-    const response = await axios.post('http://localhost:5000/AddOrderTable', null, {
-      params: {
-        order_id:orderId.value,
-        customer_id: customerId,
-        shop_id: shopId,
-        order_state: 0,
-        order_cost: sumCost.value
-      }
-    })
-    orderTable.value = response.data
-    /*console.log(orderTable.value)*/
-    if (orderTable.value.orderId != null) {
-      console.log("保存OrderTable成功")
-      saveOrderList()
-    } else {
-      console.log("保存OrderTable失败，response.data是空值")
-    }
-  } catch (error: any) {
-    console.error('保存OrderTable失败，在catch处报错');
-    console.error(error.response.data);
-  }
-  await getOrderDetail()
+
 }
 
 async function createOrderTable() {
-  try {
-    const response = await axios.post('http://localhost:5000/AddOrderTable', null, {
-      params: {
-        order_id:0,
-        customer_id: customerId,
-        shop_id: shopId,
-        order_state: 0,
-        order_cost: 0.0
-      }
-    })
-    orderTable.value = response.data
-    /*console.log(orderTable.value)*/
-    if (orderTable.value.orderId != null) {
-      console.log("新增OrderTable成功")
-      orderId.value = response.data.orderId
-    } else {
-      console.log("新增OrderTable失败，response.data是空值")
+  const response = await axios.post('http://localhost:5000/AddOrderTable', null, {
+    params: {
+      order_id: 0,
+      customer_id: customerId,
+      shop_id: shopId,
+      order_state: 0,
+      order_cost: 0
     }
-  } catch (error: any) {
-    console.error('新增OrderTable失败，在catch处报错');
-    console.error(error.response.data);
+  })
+  if(response.data.orderId != 0){
+    console.log("新建成功，下一步调用读取OrderDetail")
+    await getOrderDetail()
+  }else{
+    console.log("新建OrderTable出错，在else出错")
   }
-  await getOrderDetail()
 }
 
 
 // 定义计算属性，根据 item_id 查找对应对象的 item_quantity
 const getItemQuantity = (itemId: number) => {
-  const matchingObject = listOrderList.value.find(item => item.item_id === itemId);
+  const matchingObject = listOrderList.value.find(item => item.itemId === itemId);
   if(matchingObject){
-      return matchingObject.item_quantity
+    return matchingObject.itemQuantity
   }
   return '0'
 };
 
 /*减少数量*/
 const decreaseQuantity = (itemId: number, itemPrice:number) =>{
-  const matchingObject = listOrderList.value.find(item => item.item_id === itemId);
-  if (matchingObject && matchingObject.item_quantity!=0) {
-    matchingObject.item_quantity -= 1;
-    sumCost.value = sumCost.value - itemPrice
+  const matchingObject = listOrderList.value.findIndex(item => item.itemId === itemId);
+  if (matchingObject!=-1 && listOrderList.value[matchingObject].itemQuantity != 0) {
+    listOrderList.value[matchingObject].itemQuantity = listOrderList.value[matchingObject].itemQuantity-1;
+    orderCost.value = orderCost.value - itemPrice
   }
 }
 
 /*增加数量*/
-const increaseQuantity = (itemId: number, itemPrice:number) =>{
-  const matchingObject = listOrderList.value.find(item => item.item_id === itemId);
-  if (matchingObject) {
-    matchingObject.item_quantity += 1;
-    sumCost.value = sumCost.value + itemPrice
+const increaseQuantity = (itemId: number, itemPrice:number, itemName:string) =>{
+  const matchingObject = listOrderList.value.findIndex(item => item.itemId === itemId);
+  if (matchingObject != -1) {
+    listOrderList.value[matchingObject].itemQuantity = listOrderList.value[matchingObject].itemQuantity+1;
+    orderCost.value = orderCost.value + itemPrice
   }else{
-    let orderList = ref<OrderList>({
+    const orderList:OrderList = {
+      orderId: orderId.value,
+      itemId: itemId,
+      itemQuantity: 1,
       id: 0,
-      order_id: orderId.value,
-      item_id: 0,
-      item_quantity: 0
-    })
-    orderList.value.item_id = itemId
-    orderList.value.item_quantity = 1
-    sumCost.value = sumCost.value + itemPrice
-    listOrderList.value.push(orderList.value)
+      itemName: itemName,
+      itemPrice: itemPrice
+    }
+    orderCost.value = orderCost.value + itemPrice
+    listOrderList.value.push(orderList)
   }
 }
 
 /*将当前listOrderList中的数据save到数据库中*/
-const saveOrderList = () =>{
-  console.log("保存前listOrderList的值是：")
-  console.log(listOrderList.value)
-  for(let i = 0; i < listOrderList.value.length; i++){
-    const list = listOrderList.value[i];
-    saveOrder(list.id, list.itemId, list.orderId, list.itemQuantity)
+async function saveOrderList(){
+  for (const item of listOrderList.value) {
+    // 在这里执行针对每个对象的操作
+    console.log(item);
+    const response = await axios.post('http://localhost:5000/SaveOrderList', null, {
+      params: {
+        id: item.id,
+        item_id: item.itemId,
+        order_id: item.orderId,
+        item_quantity: item.itemQuantity,
+      }
+    })
+    if(response.data.length != 0){
+      console.log(response.data.itemName+"保存成功")
+      await saveOrderTable()
+      await getOrderDetail()
+    }else{
+      console.log(response.data.itemName+"保存失败")
+    }
   }
-  alert("保存完成")
+
 }
 
-async function saveOrder(id:number, item_id:number, order_id:number, item_quantity:number){
-  console.log("saveOrderList执行前")
-  console.log("id:"+id+"itemId:"+item_id+"itemQuantity"+item_quantity)
-  const response = await axios.post('http://localhost:5000/SaveOrderList', null, {
-    params:{
-      id: id,
-      item_id: item_id,
-      order_id: orderId.value,
-      item_quantity: item_quantity
+async function saveOrderTable(){
+  const response = await axios.post('http://localhost:5000/AddOrderTable', null, {
+    params: {
+      customer_id: customerId,
+      shop_id: shopId,
+      order_state: 0,
+      order_cost: orderCost.value,
+      order_id: orderId.value
     }
   })
-  if(response.data != null){
-    console.log(response.data)
-    console.log("插入orderList数据成功")
+  if(response.data.length != 0){
+    console.log("保存OrderTable成功")
   }else{
-    console.log("插入orderList数据失败，在else失败")
+    console.log("保存OrderTable失败")
   }
 }
 
 /*跳转到支付页面*/
 const toPayment = ()=>{
-  console.log("跳转之前的orderId是：" + orderId.value)
-  saveOrderList()
-
-  router.push({
-    name: 'customer/customerPayment',
-    query: {
-      orderId: orderId.value.toString(),
-      shopId: shopId
-    }
+  saveOrderList().then(()=>{
+    alert("跳转到支付页面")
+    router.push({
+      name: 'customer/customerPayment',
+      query: {
+        orderId: orderId.value,
+        shopId: shopId,
+        orderDetail: JSON.stringify(orderDetail.value)
+      }
+    })
   })
+}
+
+const getSum = (quantity: number, price: number) => {
+  return quantity * price
 }
 
 </script>
 
 <template>
-  <div class="flex-col items-center ">
-    <div>这是用户挑选商品页面</div>
-    <div v-for="shopItem in shopItemList" :key="shopItem.itemId"  class="flex items-center gap-x-4">
-      <!--      <p>ID: {{ shopItem.id }}</p>
-            <p>Shop ID: {{ shopItem.shop.shopId }}</p>
-            <p>item ID: {{ shopItem.item.itemId }}</p>-->
-      <p>item Name: {{ shopItem.itemName }}</p>
-      <p>item Price: {{ shopItem.itemPrice }}</p>
-      <el-button circle @click="decreaseQuantity(shopItem.itemId, shopItem.itemPrice)">-</el-button>
-      <div>{{ getItemQuantity(shopItem.itemId) }}</div>
-      <el-button circle @click="increaseQuantity(shopItem.itemId, shopItem.itemPrice)">+</el-button>
-      <!-- 这里可以根据需要添加其他展示信息 -->
+  <div class="items-center border-purple border-2 text-xl p-8 ">
+    <div class="flex items-center text-2xl">
+      <div>这里是：</div>
+      <div class="text-pink font-bold">{{ orderDetail.shopName }}</div>
+      <div></div>
     </div>
-    <div>总价为{{sumCost}}</div>
-    <el-button @click="updateOrderTable()">保存当前订单信息</el-button>
-    <el-button @click="toPayment()">去支付</el-button>
+
+    <div v-for="shopItem in shopItemList" :key="shopItem.itemId"  class="flex items-center gap-x-8 justify-center text-2xl mt-5">
+      <p class="p-2">Shop ID: {{ shopItem.shopId }}</p>
+      <p class="p-2">item ID: {{ shopItem.itemId }}</p>
+      <p class="p-2">item Name: {{ shopItem.itemName }}</p>
+      <p class="p-2">item Price: {{ shopItem.itemPrice }}</p>
+      <div class="flex items-center">
+        <el-button circle @click="decreaseQuantity(shopItem.itemId, shopItem.itemPrice)">-</el-button>
+        <div class="p-2 text-red font-bold">{{ getItemQuantity(shopItem.itemId) }}</div>
+        <el-button circle @click="increaseQuantity(shopItem.itemId, shopItem.itemPrice, shopItem.itemName)">+</el-button>
+      </div>
+
+      <!-- 这里可以根据需要添加其他展示信息 -->
+      <div class="p-2">小计: {{ getSum(shopItem.itemPrice, getItemQuantity(shopItem.itemId)) }}元</div>
+    </div>
+    <div class="justify-center">
+      <div class="p-2 text-3xl ml-270 mt-10">总价为: {{orderCost}}</div>
+      <div class="flex justify-center gap-x-60">
+        <el-button size="large" @click="saveOrderList()">保存当前订单信息</el-button>
+        <el-button size="large" @click="toPayment()">去支付</el-button>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
