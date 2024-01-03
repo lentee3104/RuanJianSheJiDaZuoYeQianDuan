@@ -22,13 +22,13 @@ const toPage = (url:string)=>{
     </div>-->
   <div class="w-[500px] h-[300px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 
-      <div class="flex-col justify-center items-center">
+      <div class="flex-col justify-center items-center text-2xl">
         <div class="flex justify-center items-center">
           软件设计与体系结构大作业
         </div>
-        <div class="flex justify-center items-center">
-          <el-button @click="toPage('/businessLogin')">商家身份登录</el-button>
-          <el-button @click="toPage('/customerLogin')">用户身份登录</el-button>
+        <div class="flex justify-center items-center mt-10 gap-x-8">
+          <el-button size="large" type="primary" @click="toPage('/businessLogin')">商家身份登录</el-button>
+          <el-button size="large" type="primary" @click="toPage('/customerLogin')">用户身份登录</el-button>
         </div>
       </div>
   </div>

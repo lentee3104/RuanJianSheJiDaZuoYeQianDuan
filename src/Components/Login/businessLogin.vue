@@ -62,6 +62,20 @@ async function businessLogin(businessName:string, password:String) {
   }
 }
 
+async function businessRegister(customerName:string, password:String) {
+  const response = await axios.post('http://localhost:5000/businessRegister', null, {
+    params: {
+      type: 1,
+      customer_name: customerName,
+      password: password
+    }
+  })
+  if(response.data.length != 0){
+    alert("注册成功，请登录")
+  }
+
+}
+
 /*这边是表单校验*/
 const ruleFormRef = ref()
 const ruleForm = reactive({
@@ -77,6 +91,11 @@ const rules = reactive({
     {required: true, message: '请输入密码', trigger: 'blur'},
   ],
 })
+
+const handleExit = () => {
+  /*跳转到登陆页面*/
+  router.push("/customerLogin")
+}
 </script>
 
 <template>
@@ -86,8 +105,8 @@ const rules = reactive({
       <el-button size="large" @click="handleLoginCustomer">登录-customer</el-button>
     </div>-->
   <div class="w-[500px] h-[300px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <div class="flex justify-center items-center">
-        软件设计与体系结构大作业
+      <div class="flex justify-center items-center text-2xl mb-10 text-pink font-bold">
+        商家登录/注册页面
       </div>
       <el-form
           ref="ruleFormRef"
@@ -95,6 +114,7 @@ const rules = reactive({
           :rules="rules"
           label-width="70px"
           class="demo-ruleForm"
+          size="large"
           status-icon>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="ruleForm.username"/>
@@ -103,10 +123,10 @@ const rules = reactive({
           <el-input v-model="ruleForm.password" type="password"/>
         </el-form-item>
 
-        <div class="flex justify-center">
-          <el-form-item>
-            <el-button size="large" @click="businessLogin(ruleForm.username,ruleForm.password)">登录-business</el-button>
-          </el-form-item>
+        <div class="flex justify-center gap-x-8 mt-10">
+            <el-button type="primary" size="large" @click="businessLogin(ruleForm.username,ruleForm.password)">登录-business</el-button>
+            <el-button type="primary" size="large" @click="businessRegister(ruleForm.username,ruleForm.password)">注册新商家</el-button>
+            <el-button type="primary" @click="handleExit">切换到customer登录</el-button>
         </div>
 
 
